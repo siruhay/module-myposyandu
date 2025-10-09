@@ -1,11 +1,11 @@
 {
-    "authorEmail": "monoland.soft@gmail.com",
-    "authorName": "monoland",
-    "authorVendor": "monosoft",
-    "connection": "platform",
-    "name": "MyPosyandu",
-    "namespace": "Module",
-    "priority": 0,
-    "disabled": false,
-    "providers": "Module\\MyPosyandu\\Providers\\MyPosyanduServiceProvider"   
+	"authorEmail": "monoland.soft@gmail.com",
+	"authorName": "monoland",
+	"authorVendor": "monosoft",
+	"connection": "platform",
+	"name": "MyPosyandu",
+	"namespace": "Module",
+	"priority": 8,
+	"disabled": false,
+	"providers": "Module\\MyPosyandu\\Providers\\MyPosyanduServiceProvider"
 }
