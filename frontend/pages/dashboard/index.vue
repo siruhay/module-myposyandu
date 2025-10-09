@@ -1,14 +1,11 @@
 <template>
-    <page-home
-        page-name="myposyandu-dashboard"
-        page-title="Untitled"
-    >
-        <template v-slot:default></template>
-    </page-home>
+	<page-home page-name="myposyandu-dashboard">
+		<template v-slot:default></template>
+	</page-home>
 </template>
 
 <script>
 export default {
-    name: "myposyandu-dashboard",
+	name: "myposyandu-dashboard",
 };
 </script>
