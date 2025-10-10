@@ -100,10 +100,12 @@ class MyPosyanduActivity extends Model
             'id' => $model->id,
             'name' => $model->name,
             'date' => $model->date,
+            'service_id' => $model->service_id,
             'participants' => $model->participants,
             'executor' => $model->executor,
-            'budget' => optional($model->funding)->budget,
-            'status' => $model->status
+            'budget' => floatval(optional($model->funding)->budget),
+            'status' => $model->status,
+            'description' => $model->description
         ];
     }
 
