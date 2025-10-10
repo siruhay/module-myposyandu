@@ -1,0 +1,45 @@
+<?php
+
+namespace Module\MyPosyandu\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+use Module\MyPosyandu\Models\MyPosyanduAttendance;
+use Module\System\Http\Resources\UserLogActivity;
+
+class AttendanceShowResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     */
+    public function toArray($request)
+    {
+        return [
+            /**
+             * the record data
+             */
+            'record' => MyPosyanduAttendance::mapResourceShow($request, $this),
+
+            /**
+             * the page setups
+             */
+            'setups' => [
+                'combos' => MyPosyanduAttendance::mapCombos($request, $this),
+
+                'icon' => MyPosyanduAttendance::getPageIcon('myposyandu-attendance'),
+
+                'key' => MyPosyanduAttendance::getDataKey(),
+
+                'logs' => $request->activities ? UserLogActivity::collection($this->activitylogs) : null,
+
+                'softdelete' => $this->trashed() ?: false,
+
+                'statuses' => MyPosyanduAttendance::mapStatuses($request, $this),
+
+                'title' => MyPosyanduAttendance::getPageTitle($request, 'myposyandu-attendance'),
+            ],
+        ];
+    }
+}
