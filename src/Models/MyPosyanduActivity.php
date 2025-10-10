@@ -9,8 +9,11 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\MyPosyandu\Http\Resources\ActivityResource;
+use Module\Posyandu\Models\PosyanduDocument;
+use Module\Posyandu\Models\PosyanduService;
 
 class MyPosyanduActivity extends Model
 {
@@ -58,6 +61,65 @@ class MyPosyanduActivity extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * mapRecordBase function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapRecordBase(Request $request): array
+    {
+        return [
+            'id' => null,
+            'name' => null,
+            'date' => null,
+            'service_id' => null,
+            'community_id' => null,
+            'executor' => null,
+            'description' => null,
+            'participants' => null,
+            'workunit_id' => null,
+            'status' => null,
+            'paths' => PosyanduDocument::whereIn('name', ['Proposal Pengajuan'])->get()->reduce(function ($carry, $document) {
+                array_push($carry, [
+                    'id' => $document->id,
+                    'name' => $document->name,
+                    'slug' => $document->slug,
+                    'mime' => $document->mime,
+                    'extension' => optional($document)->extension ?: '.pdf',
+                    'maxsize' => $document->maxsize,
+                    'path' => null
+                ]);
+
+                return $carry;
+            }, []),
+            'user_id' => null,
+        ];
+    }
+
+    /**
+     * mapCombos function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapCombos(Request $request): array
+    {
+        return [
+            'services' => PosyanduService::forCombo()
+        ];
+    }
+
+    /**
+     * foundings function
+     *
+     * @return HasOne
+     */
+    public function foundings(): HasOne
+    {
+        return $this->hasOne(MyPosyanduFounding::class, 'activity_id');
+    }
+
+    /**
      * The model store method
      *
      * @param Request $request
@@ -70,7 +132,16 @@ class MyPosyanduActivity extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->date = $request->date;
+            $model->service_id = $request->service_id;
+            $model->community_id = $request->user()->workunitable_id;
+            $model->executor = $request->executor;
+            $model->description = $request->description;
+            $model->participants = $request->participants;
+            $model->status = 'DRAFTED';
+            $model->paths = $request->paths;
+            $model->user_id = $request->user()->id;
             $model->save();
 
             DB::connection($model->connection)->commit();
@@ -98,7 +169,16 @@ class MyPosyanduActivity extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->date = $request->date;
+            $model->service_id = $request->service_id;
+            $model->community_id = $request->user()->workunitable_id;
+            $model->executor = $request->executor;
+            $model->description = $request->description;
+            $model->participants = $request->participants;
+            $model->status = 'DRAFTED';
+            $model->paths = $request->paths;
+            $model->user_id = $request->user()->id;
             $model->save();
 
             DB::connection($model->connection)->commit();

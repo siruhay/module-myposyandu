@@ -35,7 +35,7 @@
 					<v-col cols="6">
 						<v-currency-field
 							autocomplete="off"
-							label="Jumlah Anggaran"
+							label="Jumlah Kebutuhan Anggaran"
 							v-model="record.budget"
 							hide-details
 						></v-currency-field>
@@ -74,9 +74,9 @@
 			<v-divider></v-divider>
 
 			<v-card-text>
-				<!-- <v-row dense>
+				<v-row dense>
 					<v-col
-						v-for="(document, documentIndex) in record.documents"
+						v-for="(document, documentIndex) in record.paths"
 						:key="documentIndex"
 						cols="12"
 					>
@@ -95,7 +95,7 @@
 							uploadable
 						></file-upload>
 					</v-col>
-				</v-row> -->
+				</v-row>
 			</v-card-text>
 		</template>
 	</form-create>
