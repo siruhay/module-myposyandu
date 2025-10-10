@@ -33,7 +33,7 @@ class MyPosyanduFounding extends Model
      *
      * @var string
      */
-    protected $table = 'posyandu_foundings';
+    protected $table = 'posyandu_fundings';
 
     /**
      * The roles variable
@@ -73,20 +73,17 @@ class MyPosyanduFounding extends Model
 
         try {
             $model->activity_id = $activity->id;
-            $model->budget = $activity->budget;
-            $model->user_id = $activity->user()->id;
+            $model->budget = $budget;
+            $model->user_id = $activity->user_id;
             $model->save();
 
             DB::connection($model->connection)->commit();
 
-            return new FoundingResource($model);
+            return true;
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
+            throw $e;
         }
     }
 

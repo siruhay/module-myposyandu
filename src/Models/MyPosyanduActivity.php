@@ -50,6 +50,7 @@ class MyPosyanduActivity extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'paths' => 'array',
         'meta' => 'array'
     ];
 
@@ -59,6 +60,52 @@ class MyPosyanduActivity extends Model
      * @var string
      */
     protected $defaultOrder = 'name';
+
+    /**
+     * mapHeaders function
+     *
+     * readonly value?: SelectItemKey<any>
+     * readonly title?: string | undefined
+     * readonly align?: 'start' | 'end' | 'center' | undefined
+     * readonly width?: string | number | undefined
+     * readonly minWidth?: string | undefined
+     * readonly maxWidth?: string | undefined
+     * readonly nowrap?: boolean | undefined
+     * readonly sortable?: boolean | undefined
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapHeaders(Request $request): array
+    {
+        return [
+            ['title' => 'Nama Kegiatan', 'value' => 'name'],
+            ['title' => 'Tanggal', 'value' => 'date'],
+            ['title' => 'Anggaran', 'value' => 'budget'],
+            ['title' => 'JPM', 'value' => 'participants'],
+            ['title' => 'Pelaksana', 'value' => 'executor'],
+            ['title' => 'Status', 'value' => 'status'],
+        ];
+    }
+
+    /**
+     * mapResource function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapResource(Request $request, $model): array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'date' => $model->date,
+            'participants' => $model->participants,
+            'executor' => $model->executor,
+            'budget' => optional($model->funding)->budget,
+            'status' => $model->status
+        ];
+    }
 
     /**
      * mapRecordBase function
@@ -114,7 +161,7 @@ class MyPosyanduActivity extends Model
      *
      * @return HasOne
      */
-    public function foundings(): HasOne
+    public function funding(): HasOne
     {
         return $this->hasOne(MyPosyanduFounding::class, 'activity_id');
     }
