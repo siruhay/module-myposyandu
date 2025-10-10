@@ -135,7 +135,7 @@ class MyPosyanduActivity extends Model
             $model->name = $request->name;
             $model->date = $request->date;
             $model->service_id = $request->service_id;
-            $model->community_id = $request->user()->workunitable_id;
+            $model->community_id = optional($request->user()->userable)->workunitable_id;
             $model->executor = $request->executor;
             $model->description = $request->description;
             $model->participants = $request->participants;
@@ -143,6 +143,8 @@ class MyPosyanduActivity extends Model
             $model->paths = $request->paths;
             $model->user_id = $request->user()->id;
             $model->save();
+
+            MyPosyanduFounding::storeRecord($model, $request->budget);
 
             DB::connection($model->connection)->commit();
 

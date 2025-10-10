@@ -11,6 +11,7 @@ use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\MyPosyandu\Http\Resources\FoundingResource;
+use Ramsey\Uuid\Type\Decimal;
 
 class MyPosyanduFounding extends Model
 {
@@ -58,19 +59,22 @@ class MyPosyanduFounding extends Model
     protected $defaultOrder = 'name';
 
     /**
-     * The model store method
+     * storeRecord function
      *
-     * @param Request $request
+     * @param MyPosyanduActivity $activity
+     * @param integer $budget
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(MyPosyanduActivity $activity, float $budget = 0)
     {
         $model = new static();
 
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            $model->activity_id = $activity->id;
+            $model->budget = $activity->budget;
+            $model->user_id = $activity->user()->id;
             $model->save();
 
             DB::connection($model->connection)->commit();
