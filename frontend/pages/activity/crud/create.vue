@@ -35,13 +35,22 @@
 					<v-col cols="6">
 						<v-currency-field
 							autocomplete="off"
-							label="Anggaran"
+							label="Jumlah Anggaran"
 							v-model="record.budget"
 							hide-details
 						></v-currency-field>
 					</v-col>
 
 					<v-col cols="6">
+						<v-currency-field
+							autocomplete="off"
+							label="Jumlah Penerima Manfaat"
+							v-model="record.participants"
+							hide-details
+						></v-currency-field>
+					</v-col>
+
+					<v-col cols="12">
 						<v-text-field
 							autocomplete="off"
 							label="Pelaksana"
