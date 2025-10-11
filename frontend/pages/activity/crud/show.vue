@@ -78,7 +78,24 @@
 			</v-card-text>
 		</template>
 
-		<template v-slot:helpdesk></template>
+		<template v-slot:info="{ theme }">
+			<div class="text-overline mt-4">Link</div>
+			<v-divider class="mb-3"></v-divider>
+
+			<v-row dense>
+				<v-col cols="12">
+					<v-btn :color="theme" variant="flat" block
+						>Ajukan Rencana Kegiatan</v-btn
+					>
+				</v-col>
+
+				<v-col cols="12">
+					<v-btn :color="theme" variant="flat" block
+						>Daftar Penerima Manfaat</v-btn
+					>
+				</v-col>
+			</v-row>
+		</template>
 	</form-show>
 </template>
 
