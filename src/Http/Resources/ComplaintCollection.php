@@ -2,10 +2,10 @@
 
 namespace Module\MyPosyandu\Http\Resources;
 
-use Module\MyPosyandu\Models\MyPosyanduComplain;
+use Module\MyPosyandu\Models\MyPosyanduComplaint;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ComplainCollection extends ResourceCollection
+class ComplaintCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -15,7 +15,7 @@ class ComplainCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return ComplainResource::collection($this->collection);
+        return ComplaintResource::collection($this->collection);
     }
 
     /**
@@ -34,34 +34,34 @@ class ComplainCollection extends ResourceCollection
         return [
             'setups' => [
                 /** the page combo */
-                'combos' => MyPosyanduComplain::mapCombos($request),
+                'combos' => MyPosyanduComplaint::mapCombos($request),
 
                 /** the page data filter */
-                'filters' => MyPosyanduComplain::mapFilters(),
+                'filters' => MyPosyanduComplaint::mapFilters(),
 
                 /** the table header */
-                'headers' => MyPosyanduComplain::mapHeaders($request),
+                'headers' => MyPosyanduComplaint::mapHeaders($request),
 
                 /** the page icon */
-                'icon' => MyPosyanduComplain::getPageIcon('myposyandu-complain'),
+                'icon' => MyPosyanduComplaint::getPageIcon('myposyandu-complain'),
 
                 /** the record key */
-                'key' => MyPosyanduComplain::getDataKey(),
+                'key' => MyPosyanduComplaint::getDataKey(),
 
                 /** the page default */
-                'recordBase' => MyPosyanduComplain::mapRecordBase($request),
+                'recordBase' => MyPosyanduComplaint::mapRecordBase($request),
 
                 /** the page statuses */
-                'statuses' => MyPosyanduComplain::mapStatuses($request),
+                'statuses' => MyPosyanduComplaint::mapStatuses($request),
 
                 /** the page data mode */
                 'trashed' => $request->trashed ?: false,
 
                 /** the page title */
-                'title' => MyPosyanduComplain::getPageTitle($request, 'myposyandu-complain'),
+                'title' => MyPosyanduComplaint::getPageTitle($request, 'myposyandu-complain'),
 
                 /** the usetrash flag */
-                'usetrash' => MyPosyanduComplain::hasSoftDeleted(),
+                'usetrash' => MyPosyanduComplaint::hasSoftDeleted(),
             ]
         ];
     }

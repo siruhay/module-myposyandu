@@ -3,10 +3,10 @@
 namespace Module\MyPosyandu\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Module\MyPosyandu\Models\MyPosyanduComplain;
+use Module\MyPosyandu\Models\MyPosyanduComplaint;
 use Module\System\Http\Resources\UserLogActivity;
 
-class ComplainShowResource extends JsonResource
+class ComplaintShowResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,25 +20,25 @@ class ComplainShowResource extends JsonResource
             /**
              * the record data
              */
-            'record' => MyPosyanduComplain::mapResourceShow($request, $this),
+            'record' => MyPosyanduComplaint::mapResourceShow($request, $this),
 
             /**
              * the page setups
              */
             'setups' => [
-                'combos' => MyPosyanduComplain::mapCombos($request, $this),
+                'combos' => MyPosyanduComplaint::mapCombos($request, $this),
 
-                'icon' => MyPosyanduComplain::getPageIcon('myposyandu-complain'),
+                'icon' => MyPosyanduComplaint::getPageIcon('myposyandu-complain'),
 
-                'key' => MyPosyanduComplain::getDataKey(),
+                'key' => MyPosyanduComplaint::getDataKey(),
 
                 'logs' => $request->activities ? UserLogActivity::collection($this->activitylogs) : null,
 
                 'softdelete' => $this->trashed() ?: false,
 
-                'statuses' => MyPosyanduComplain::mapStatuses($request, $this),
+                'statuses' => MyPosyanduComplaint::mapStatuses($request, $this),
 
-                'title' => MyPosyanduComplain::getPageTitle($request, 'myposyandu-complain'),
+                'title' => MyPosyanduComplaint::getPageTitle($request, 'myposyandu-complain'),
             ],
         ];
     }

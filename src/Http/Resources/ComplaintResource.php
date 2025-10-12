@@ -2,10 +2,10 @@
 
 namespace Module\MyPosyandu\Http\Resources;
 
-use Module\MyPosyandu\Models\MyPosyanduComplain;
+use Module\MyPosyandu\Models\MyPosyanduComplaint;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ComplainResource extends JsonResource
+class ComplaintResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,6 +15,6 @@ class ComplainResource extends JsonResource
      */
     public function toArray($request)
     {
-        return MyPosyanduComplain::mapResource($request, $this);
+        return MyPosyanduComplaint::mapResource($request, $this);
     }
 }

@@ -10,9 +10,9 @@ use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Module\MyPosyandu\Http\Resources\ComplainResource;
+use Module\MyPosyandu\Http\Resources\ComplaintResource;
 
-class MyPosyanduComplain extends Model
+class MyPosyanduComplaint extends Model
 {
     use Filterable;
     use HasMeta;
@@ -32,7 +32,7 @@ class MyPosyanduComplain extends Model
      *
      * @var string
      */
-    protected $table = 'posyandu_complains';
+    protected $table = 'posyandu_complaints';
 
     /**
      * The roles variable
@@ -75,7 +75,7 @@ class MyPosyanduComplain extends Model
 
             DB::connection($model->connection)->commit();
 
-            return new ComplainResource($model);
+            return new ComplaintResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -103,7 +103,7 @@ class MyPosyanduComplain extends Model
 
             DB::connection($model->connection)->commit();
 
-            return new ComplainResource($model);
+            return new ComplaintResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -129,7 +129,7 @@ class MyPosyanduComplain extends Model
 
             DB::connection($model->connection)->commit();
 
-            return new ComplainResource($model);
+            return new ComplaintResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -155,7 +155,7 @@ class MyPosyanduComplain extends Model
 
             DB::connection($model->connection)->commit();
 
-            return new ComplainResource($model);
+            return new ComplaintResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -181,7 +181,7 @@ class MyPosyanduComplain extends Model
 
             DB::connection($model->connection)->commit();
 
-            return new ComplainResource($model);
+            return new ComplaintResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 

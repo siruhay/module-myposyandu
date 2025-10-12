@@ -158,6 +158,52 @@ export default {
 			],
 		},
 
+		// complaint
+		{
+			path: "complaint",
+			component: () =>
+				import(
+					/* webpackChunkName: "mposyandu" */ "@modules/myposyandu/frontend/pages/complaint/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "myposyandu-complaint",
+					component: () =>
+						import(
+							/* webpackChunkName: "mposyandu" */ "@modules/myposyandu/frontend/pages/complaint/crud/data.vue"
+						),
+				},
+
+				{
+					path: "create",
+					name: "myposyandu-complaint-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "mposyandu" */ "@modules/myposyandu/frontend/pages/complaint/crud/create.vue"
+						),
+				},
+
+				{
+					path: ":complaint/edit",
+					name: "myposyandu-complaint-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "mposyandu" */ "@modules/myposyandu/frontend/pages/complaint/crud/edit.vue"
+						),
+				},
+
+				{
+					path: ":complaint/show",
+					name: "myposyandu-complaint-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "mposyandu" */ "@modules/myposyandu/frontend/pages/complaint/crud/show.vue"
+						),
+				},
+			],
+		},
+
 		// report
 		{
 			path: "report",
