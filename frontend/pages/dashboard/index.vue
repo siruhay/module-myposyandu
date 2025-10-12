@@ -2,7 +2,7 @@
 	<page-home page-name="myposyandu-dashboard">
 		<template v-slot:default>
 			<v-row dense>
-				<v-col cols="3">
+				<v-col md="3" cols="12">
 					<v-sheet border="thin" rounded="lg">
 						<div class="px-4 py-2">
 							<div class="text-overline">Pengaduan Berproses</div>
@@ -22,7 +22,7 @@
 					</v-sheet>
 				</v-col>
 
-				<v-col cols="3">
+				<v-col md="3" cols="12">
 					<v-sheet border="thin" rounded="lg">
 						<div class="px-4 py-2">
 							<div class="text-overline">Pengaduan Selesai</div>
@@ -42,7 +42,7 @@
 					</v-sheet>
 				</v-col>
 
-				<v-col cols="3">
+				<v-col md="3" cols="12">
 					<v-sheet border="thin" rounded="lg">
 						<div class="px-4 py-2">
 							<div class="text-overline">Kegiatan Berproses</div>
@@ -62,7 +62,7 @@
 					</v-sheet>
 				</v-col>
 
-				<v-col cols="3">
+				<v-col md="3" cols="12">
 					<v-sheet border="thin" rounded="lg">
 						<div class="px-4 py-2">
 							<div class="text-overline">Kegiatan Selesai</div>
