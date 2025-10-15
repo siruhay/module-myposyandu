@@ -9,6 +9,7 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -82,6 +83,7 @@ class MyPosyanduActivity extends Model
     {
         return [
             ['title' => 'Nama Kegiatan', 'value' => 'name'],
+            ['title' => 'Bidang', 'value' => 'service_name'],
             ['title' => 'Tanggal', 'value' => 'date'],
             ['title' => 'Anggaran', 'value' => 'budget'],
             ['title' => 'JPM', 'value' => 'participants'],
@@ -103,6 +105,7 @@ class MyPosyanduActivity extends Model
             'name' => $model->name,
             'date' => $model->date,
             'service_id' => $model->service_id,
+            'service_name' => optional($model->service)->name,
             'participants' => $model->participants,
             'executor' => $model->executor,
             'budget' => floatval(optional($model->funding)->budget),
@@ -183,6 +186,16 @@ class MyPosyanduActivity extends Model
             'activity_id',
             'complaint_id'
         );
+    }
+
+    /**
+     * service function
+     *
+     * @return BelongsTo
+     */
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(PosyanduService::class, 'service_id');
     }
 
     /**
