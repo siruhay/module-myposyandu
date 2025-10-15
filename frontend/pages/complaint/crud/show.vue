@@ -9,6 +9,7 @@
 							label="Nama Warga"
 							v-model="record.name"
 							hide-details
+							readonly
 						></v-text-field>
 					</v-col>
 
@@ -19,6 +20,7 @@
 							label="Bidang"
 							v-model="record.service_id"
 							hide-details
+							readonly
 						></v-select>
 					</v-col>
 
@@ -29,6 +31,7 @@
 							label="Tanggal"
 							v-model="record.date"
 							hide-details
+							readonly
 						></v-date-input>
 					</v-col>
 
@@ -38,7 +41,22 @@
 							label="Keterangan"
 							v-model="record.description"
 							hide-details
+							readonly
 						></v-textarea>
+					</v-col>
+
+					<v-col cols="12">
+						<div class="d-flex align-center">
+							<div class="text-caption font-weight-bold">
+								Tingkat Urgensi:
+							</div>
+
+							<v-radio-group v-model="record.urgency" hide-details inline>
+								<v-radio label="Rendah" value="LOW"></v-radio>
+								<v-radio label="Sedang" value="MEDIUM"></v-radio>
+								<v-radio label="Tinggi" value="HIGH"></v-radio>
+							</v-radio-group>
+						</div>
 					</v-col>
 				</v-row>
 			</v-card-text>

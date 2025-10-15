@@ -83,15 +83,27 @@
 			<v-divider class="mb-3"></v-divider>
 
 			<v-row dense>
-				<v-col cols="12">
-					<v-btn :color="theme" variant="flat" block
-						>Ajukan Rencana Kegiatan</v-btn
-					>
+				<v-col cols="6">
+					<v-btn :color="theme" variant="flat" size="large" block>
+						<div class="text-caption text-uppercase" style="line-height: 1">
+							Daftar <br />
+							Pengaduan
+						</div>
+					</v-btn>
+				</v-col>
+
+				<v-col cols="6">
+					<v-btn :color="theme" variant="flat" size="large" block>
+						<div class="text-caption text-uppercase" style="line-height: 1">
+							Daftar <br />
+							Penerima Manfaat
+						</div>
+					</v-btn>
 				</v-col>
 
 				<v-col cols="12">
-					<v-btn :color="theme" variant="flat" block
-						>Daftar Penerima Manfaat</v-btn
+					<v-btn class="text-white" color="green" variant="flat" block
+						>Ajukan Rencana Kegiatan</v-btn
 					>
 				</v-col>
 			</v-row>

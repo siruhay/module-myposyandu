@@ -9,11 +9,12 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Module\Posyandu\Models\PosyanduService;
+use Module\Posyandu\Models\PosyanduActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\MyPosyandu\Http\Resources\ComplaintResource;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Module\Posyandu\Models\PosyanduActivity;
 
 class MyPosyanduComplaint extends Model
 {
@@ -50,6 +51,7 @@ class MyPosyanduComplaint extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'paths' => 'array',
         'meta' => 'array'
     ];
 
@@ -59,6 +61,75 @@ class MyPosyanduComplaint extends Model
      * @var string
      */
     protected $defaultOrder = 'name';
+
+    /**
+     * mapHeaders function
+     *
+     * readonly value?: SelectItemKey<any>
+     * readonly title?: string | undefined
+     * readonly align?: 'start' | 'end' | 'center' | undefined
+     * readonly width?: string | number | undefined
+     * readonly minWidth?: string | undefined
+     * readonly maxWidth?: string | undefined
+     * readonly nowrap?: boolean | undefined
+     * readonly sortable?: boolean | undefined
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapHeaders(Request $request): array
+    {
+        return [
+            ['title' => 'Name', 'value' => 'name'],
+            ['title' => 'Bidang', 'value' => 'service_name'],
+            ['title' => 'Tanggal', 'value' => 'date'],
+            ['title' => 'Urgensi', 'value' => 'urgency'],
+            ['title' => 'Keterangan', 'value' => 'description'],
+            ['title' => 'Status', 'value' => 'status', 'width' => '170'],
+        ];
+    }
+
+    /**
+     * mapResource function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapResource(Request $request, $model): array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'date' => $model->date,
+            'service_name' => $model->service?->name,
+            'urgency' => $model->urgency,
+            'status' => $model->status,
+            'description' => $model->description,
+
+            'subtitle' => (string) $model->updated_at,
+            'updated_at' => (string) $model->updated_at,
+        ];
+    }
+
+    /**
+     * mapResourceShow function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapResourceShow(Request $request, $model): array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'date' => $model->date,
+            'service_id' => $model->service_id,
+            'description' => $model->description,
+            'urgency' => $model->urgency,
+            'status' => $model->status,
+            'paths' => $model->paths,
+        ];
+    }
 
     /**
      * mapCombos function
@@ -86,6 +157,16 @@ class MyPosyanduComplaint extends Model
             'complaint_id',
             'activity_id',
         );
+    }
+
+    /**
+     * service function
+     *
+     * @return BelongsTo
+     */
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(PosyanduService::class, 'service_id');
     }
 
     /**

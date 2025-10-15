@@ -12,7 +12,7 @@ Route::post('upload-document', [DashboardController::class, 'upload']);
 Route::get('upload-document', [DashboardController::class, 'download']);
 Route::delete('upload-document', [DashboardController::class, 'destroy']);
 
-Route::resource('complaint', MyPosyanduComplaintController::class)->parameters(['activity' => 'myPosyanduComplaint']);
+Route::resource('complaint', MyPosyanduComplaintController::class)->parameters(['complaint' => 'myPosyanduComplaint']);
 
 Route::resource('activity', MyPosyanduActivityController::class)->parameters(['activity' => 'myPosyanduActivity']);
 

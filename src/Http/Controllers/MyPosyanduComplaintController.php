@@ -21,7 +21,8 @@ class MyPosyanduComplaintController extends Controller
         Gate::authorize('view', MyPosyanduComplaint::class);
 
         return new ComplaintCollection(
-            MyPosyanduComplaint::applyMode($request->mode)
+            MyPosyanduComplaint::with(['service'])
+                ->applyMode($request->mode)
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)
