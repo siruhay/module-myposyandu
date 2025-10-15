@@ -19,6 +19,7 @@
 							label="Bidang"
 							v-model="record.service_id"
 							hide-details
+							@update:model-value="fetchDocuments(record)"
 						></v-select>
 					</v-col>
 
@@ -39,6 +40,20 @@
 							v-model="record.description"
 							hide-details
 						></v-textarea>
+					</v-col>
+
+					<v-col cols="12">
+						<div class="d-flex align-center">
+							<div class="text-caption font-weight-bold">
+								Tingkat Urgensi:
+							</div>
+
+							<v-radio-group v-model="record.urgency" hide-details inline>
+								<v-radio label="Rendah" value="LOW"></v-radio>
+								<v-radio label="Sedang" value="MEDIUM"></v-radio>
+								<v-radio label="Tinggi" value="HIGH"></v-radio>
+							</v-radio-group>
+						</div>
 					</v-col>
 				</v-row>
 			</v-card-text>
@@ -77,5 +92,19 @@
 <script>
 export default {
 	name: "myposyandu-complaint-create",
+
+	methods: {
+		fetchDocuments: function (record) {
+			this.$http(`/myposyandu/api/fetch-combos`, {
+				method: "GET",
+				params: {
+					model: "documents",
+					refid: record.service_id,
+				},
+			}).then((res) => {
+				record.paths = res;
+			});
+		},
+	},
 };
 </script>

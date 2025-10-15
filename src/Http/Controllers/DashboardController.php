@@ -5,7 +5,10 @@ namespace Module\MyPosyandu\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Module\Posyandu\Http\Resources\DocmapResource;
+use Module\Posyandu\Models\PosyanduDocmap;
 use Module\Posyandu\Models\PosyanduDocument;
+use Module\Posyandu\Models\PosyanduService;
 
 class DashboardController extends Controller
 {
@@ -18,6 +21,19 @@ class DashboardController extends Controller
     public function index(Request $request): void
     {
         //
+    }
+
+    public function combos(Request $request)
+    {
+        switch ($request->model) {
+            case 'documents':
+                return DocmapResource::collection(PosyanduService::find($request->refid)->docmaps->load(['document']));
+                break;
+
+            default:
+                # code...
+                break;
+        }
     }
 
     /**

@@ -9,13 +9,11 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
-use Module\Posyandu\Models\PosyanduService;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Module\MyPosyandu\Http\Resources\ComplaintResource;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Module\Posyandu\Models\PosyanduActivity;
+use Module\MyPosyandu\Models\MyPosyanduActivity;
+use Module\MyPosyandu\Http\Resources\PremiseResource;
 
-class MyPosyanduComplaint extends Model
+class MyPosyanduPremise extends Model
 {
     use Filterable;
     use HasMeta;
@@ -35,14 +33,14 @@ class MyPosyanduComplaint extends Model
      *
      * @var string
      */
-    protected $table = 'posyandu_complaints';
+    protected $table = 'posyandu_premises';
 
     /**
      * The roles variable
      *
      * @var array
      */
-    protected $roles = ['myposyandu-complain'];
+    protected $roles = ['myposyandu-premise'];
 
     /**
      * The attributes that should be cast to native types.
@@ -61,62 +59,24 @@ class MyPosyanduComplaint extends Model
     protected $defaultOrder = 'name';
 
     /**
-     * mapCombos function
-     *
-     * @param Request $request
-     * @return array
-     */
-    public static function mapCombos(Request $request): array
-    {
-        return [
-            'services' => PosyanduService::forCombo(),
-        ];
-    }
-
-    /**
-     * complaints function
-     *
-     * @return BelongsToMany
-     */
-    public function complaints(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            PosyanduActivity::class,
-            'posyandu_premises',
-            'complaint_id',
-            'activity_id',
-        );
-    }
-
-    /**
      * The model store method
      *
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, MyPosyanduActivity $parent)
     {
         $model = new static();
 
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ['LOW', 'MEDIUM', 'HIGH']
-            // ['NEW', 'IN-PROGRESS', 'RESOLVED']
-            $model->name = $request->name;
-            $model->date = $request->date;
-            $model->service_id = $request->service_id;
-            $model->community_id = optional($request->user()->userable)->workunitable_id;
-            $model->description = $request->description;
-            $model->paths = $request->paths;
-            $model->urgency = $request->urgency;
-            $model->status = 'NEW';
-            $model->user_id = $request->user()->id;
-            $model->save();
+            // ...
+            $parent->premises()->save($model);
 
             DB::connection($model->connection)->commit();
 
-            return new ComplaintResource($model);
+            return new PremiseResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -144,7 +104,7 @@ class MyPosyanduComplaint extends Model
 
             DB::connection($model->connection)->commit();
 
-            return new ComplaintResource($model);
+            return new PremiseResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -170,7 +130,7 @@ class MyPosyanduComplaint extends Model
 
             DB::connection($model->connection)->commit();
 
-            return new ComplaintResource($model);
+            return new PremiseResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -196,7 +156,7 @@ class MyPosyanduComplaint extends Model
 
             DB::connection($model->connection)->commit();
 
-            return new ComplaintResource($model);
+            return new PremiseResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 
@@ -222,7 +182,7 @@ class MyPosyanduComplaint extends Model
 
             DB::connection($model->connection)->commit();
 
-            return new ComplaintResource($model);
+            return new PremiseResource($model);
         } catch (\Exception $e) {
             DB::connection($model->connection)->rollBack();
 

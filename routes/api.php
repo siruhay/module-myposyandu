@@ -7,6 +7,7 @@ use Module\MyPosyandu\Http\Controllers\MyPosyanduActivityController;
 use Module\MyPosyandu\Http\Controllers\MyPosyanduComplaintController;
 
 Route::get('dashboard', [DashboardController::class, 'index']);
+Route::get('fetch-combos', [DashboardController::class, 'combos']);
 Route::post('upload-document', [DashboardController::class, 'upload']);
 Route::get('upload-document', [DashboardController::class, 'download']);
 Route::delete('upload-document', [DashboardController::class, 'destroy']);

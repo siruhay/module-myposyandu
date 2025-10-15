@@ -9,9 +9,11 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\MyPosyandu\Http\Resources\ActivityResource;
+use Module\Posyandu\Models\PosyanduComplaint;
 use Module\Posyandu\Models\PosyanduDocument;
 use Module\Posyandu\Models\PosyanduService;
 
@@ -166,6 +168,21 @@ class MyPosyanduActivity extends Model
     public function funding(): HasOne
     {
         return $this->hasOne(MyPosyanduFounding::class, 'activity_id');
+    }
+
+    /**
+     * complaints function
+     *
+     * @return BelongsToMany
+     */
+    public function complaints(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            PosyanduComplaint::class,
+            'posyandu_premises',
+            'activity_id',
+            'complaint_id'
+        );
     }
 
     /**
