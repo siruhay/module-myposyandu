@@ -9,14 +9,14 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Module\MyPosyandu\Http\Resources\ActivityResource;
-use Module\Posyandu\Models\PosyanduComplaint;
-use Module\Posyandu\Models\PosyanduDocument;
 use Module\Posyandu\Models\PosyanduService;
+use Module\Posyandu\Models\PosyanduDocument;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Module\Posyandu\Models\PosyanduComplaint;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Module\MyPosyandu\Http\Resources\ActivityResource;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class MyPosyanduActivity extends Model
 {

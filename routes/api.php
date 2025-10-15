@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Module\MyPosyandu\Http\Controllers\DashboardController;
 use Module\MyPosyandu\Http\Controllers\MyPosyanduReportController;
+use Module\MyPosyandu\Http\Controllers\MyPosyanduPremiseController;
 use Module\MyPosyandu\Http\Controllers\MyPosyanduActivityController;
 use Module\MyPosyandu\Http\Controllers\MyPosyanduComplaintController;
 
@@ -15,5 +16,10 @@ Route::delete('upload-document', [DashboardController::class, 'destroy']);
 Route::resource('complaint', MyPosyanduComplaintController::class)->parameters(['complaint' => 'myPosyanduComplaint']);
 
 Route::resource('activity', MyPosyanduActivityController::class)->parameters(['activity' => 'myPosyanduActivity']);
+
+Route::resource('activity.premise', MyPosyanduPremiseController::class)->parameters([
+    'activity' => 'myPosyanduActivity',
+    'premise' => 'myPosyanduPremise'
+]);
 
 Route::resource('report', MyPosyanduReportController::class)->parameters(['report' => 'myPosyanduReport']);
