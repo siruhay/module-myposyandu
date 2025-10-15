@@ -10,6 +10,6 @@
 
 <script>
 export default {
-	name: "myposyandu-founding-data",
+	name: "myposyandu-funding-data",
 };
 </script>

@@ -14,6 +14,6 @@
 
 <script>
 export default {
-	name: "myposyandu-founding-create",
+	name: "myposyandu-funding-create",
 };
 </script>

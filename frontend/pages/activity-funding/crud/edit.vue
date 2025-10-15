@@ -14,6 +14,6 @@
 
 <script>
 export default {
-	name: "myposyandu-founding-edit",
+	name: "myposyandu-funding-edit",
 };
 </script>

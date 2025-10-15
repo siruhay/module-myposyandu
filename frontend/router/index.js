@@ -66,47 +66,93 @@ export default {
 			],
 		},
 
-		// founding
+		// funding
 		{
-			path: "activity/:activity/founding",
+			path: "activity/:activity/funding",
 			component: () =>
 				import(
-					/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-founding/index.vue"
+					/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-funding/index.vue"
 				),
 			children: [
 				{
 					path: "",
-					name: "myposyandu-founding",
+					name: "myposyandu-funding",
 					component: () =>
 						import(
-							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-founding/crud/data.vue"
+							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-funding/crud/data.vue"
 						),
 				},
 
 				{
 					path: "create",
-					name: "myposyandu-founding-create",
+					name: "myposyandu-funding-create",
 					component: () =>
 						import(
-							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-founding/crud/create.vue"
+							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-funding/crud/create.vue"
 						),
 				},
 
 				{
-					path: ":founding/edit",
-					name: "myposyandu-founding-edit",
+					path: ":funding/edit",
+					name: "myposyandu-funding-edit",
 					component: () =>
 						import(
-							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-founding/crud/edit.vue"
+							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-funding/crud/edit.vue"
 						),
 				},
 
 				{
-					path: ":founding/show",
-					name: "myposyandu-founding-show",
+					path: ":funding/show",
+					name: "myposyandu-funding-show",
 					component: () =>
 						import(
-							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-founding/crud/show.vue"
+							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-funding/crud/show.vue"
+						),
+				},
+			],
+		},
+
+		// premise
+		{
+			path: "activity/:activity/premise",
+			component: () =>
+				import(
+					/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-premise/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "myposyandu-premise",
+					component: () =>
+						import(
+							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-premise/crud/data.vue"
+						),
+				},
+
+				{
+					path: "create",
+					name: "myposyandu-premise-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-premise/crud/create.vue"
+						),
+				},
+
+				{
+					path: ":premise/edit",
+					name: "myposyandu-premise-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-premise/crud/edit.vue"
+						),
+				},
+
+				{
+					path: ":premise/show",
+					name: "myposyandu-premise-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-premise/crud/show.vue"
 						),
 				},
 			],

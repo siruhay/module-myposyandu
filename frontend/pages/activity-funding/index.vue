@@ -1,7 +1,7 @@
 <template>
 	<page-crud
-		page-name="myposyandu-founding"
-		page-key="founding"
+		page-name="myposyandu-funding"
+		page-key="funding"
 		parent-name="myposyandu-activity"
 		parent-key="activity"
 	></page-crud>
@@ -9,6 +9,6 @@
 
 <script>
 export default {
-	name: "myposyandu-founding",
+	name: "myposyandu-funding",
 };
 </script>

@@ -84,7 +84,13 @@
 
 			<v-row dense>
 				<v-col cols="6">
-					<v-btn :color="theme" variant="flat" size="large" block>
+					<v-btn
+						:color="theme"
+						variant="flat"
+						size="large"
+						block
+						@click="$router.push({ name: 'myposyandu-premise' })"
+					>
 						<div class="text-caption text-uppercase" style="line-height: 1">
 							Daftar <br />
 							Pengaduan
@@ -93,7 +99,13 @@
 				</v-col>
 
 				<v-col cols="6">
-					<v-btn :color="theme" variant="flat" size="large" block>
+					<v-btn
+						:color="theme"
+						variant="flat"
+						size="large"
+						block
+						@click="$router.push({ name: 'myposyandu-funding' })"
+					>
 						<div class="text-caption text-uppercase" style="line-height: 1">
 							Daftar <br />
 							Penerima Manfaat
