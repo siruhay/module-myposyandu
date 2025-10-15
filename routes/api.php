@@ -22,4 +22,9 @@ Route::resource('activity.premise', MyPosyanduPremiseController::class)->paramet
     'premise' => 'myPosyanduPremise'
 ]);
 
+Route::resource('activity.recipient', MyPosyanduPremiseController::class)->parameters([
+    'activity' => 'myPosyanduActivity',
+    'premise' => 'myPosyanduPremise'
+]);
+
 Route::resource('report', MyPosyanduReportController::class)->parameters(['report' => 'myPosyanduReport']);

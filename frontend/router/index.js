@@ -158,6 +158,52 @@ export default {
 			],
 		},
 
+		// recipient
+		{
+			path: "activity/:activity/recipient",
+			component: () =>
+				import(
+					/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-recipient/index.vue"
+				),
+			children: [
+				{
+					path: "",
+					name: "myposyandu-recipient",
+					component: () =>
+						import(
+							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-recipient/crud/data.vue"
+						),
+				},
+
+				{
+					path: "create",
+					name: "myposyandu-recipient-create",
+					component: () =>
+						import(
+							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-recipient/crud/create.vue"
+						),
+				},
+
+				{
+					path: ":recipient/edit",
+					name: "myposyandu-recipient-edit",
+					component: () =>
+						import(
+							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-recipient/crud/edit.vue"
+						),
+				},
+
+				{
+					path: ":recipient/show",
+					name: "myposyandu-recipient-show",
+					component: () =>
+						import(
+							/* webpackChunkName: "myposyandu" */ "@modules/myposyandu/frontend/pages/activity-recipient/crud/show.vue"
+						),
+				},
+			],
+		},
+
 		// beneficiary
 		{
 			path: "beneficiary",

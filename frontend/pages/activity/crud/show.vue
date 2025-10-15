@@ -78,7 +78,7 @@
 			</v-card-text>
 		</template>
 
-		<template v-slot:info="{ theme }">
+		<template v-slot:info="{ statuses: { hasPremises }, theme }">
 			<div class="text-overline mt-4">Link</div>
 			<v-divider class="mb-3"></v-divider>
 
@@ -104,7 +104,7 @@
 						variant="flat"
 						size="large"
 						block
-						@click="$router.push({ name: 'myposyandu-funding' })"
+						@click="$router.push({ name: 'myposyandu-recipient' })"
 					>
 						<div class="text-caption text-uppercase" style="line-height: 1">
 							Daftar <br />
@@ -113,10 +113,35 @@
 					</v-btn>
 				</v-col>
 
-				<v-col cols="12">
-					<v-btn class="text-white" color="green" variant="flat" block
-						>Ajukan Rencana Kegiatan</v-btn
+				<v-col cols="6">
+					<v-btn
+						:color="theme"
+						variant="flat"
+						size="large"
+						block
+						@click="$router.push({ name: 'myposyandu-funding' })"
 					>
+						<div class="text-caption text-uppercase" style="line-height: 1">
+							Status <br />
+							Pendanaan
+						</div>
+					</v-btn>
+				</v-col>
+
+				<v-col cols="6">
+					<v-btn
+						:disabled="!hasPremises"
+						color="green"
+						variant="flat"
+						size="large"
+						block
+						@click="$router.push({ name: 'myposyandu-funding' })"
+					>
+						<div class="text-caption text-uppercase" style="line-height: 1">
+							Ajukan <br />
+							Rencana Kegiatan
+						</div>
+					</v-btn>
 				</v-col>
 			</v-row>
 		</template>

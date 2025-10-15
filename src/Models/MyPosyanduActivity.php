@@ -65,6 +65,19 @@ class MyPosyanduActivity extends Model
     protected $defaultOrder = 'name';
 
     /**
+     * mapCombos function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapCombos(Request $request): array
+    {
+        return [
+            'services' => PosyanduService::forCombo()
+        ];
+    }
+
+    /**
      * mapHeaders function
      *
      * readonly value?: SelectItemKey<any>
@@ -157,15 +170,15 @@ class MyPosyanduActivity extends Model
     }
 
     /**
-     * mapCombos function
+     * mapStatuses function
      *
      * @param Request $request
      * @return array
      */
-    public static function mapCombos(Request $request): array
+    public static function mapStatuses(Request $request, $model = null): array
     {
         return [
-            'services' => PosyanduService::forCombo()
+            'hasPremises' => $model ? $model->premises->count() > 0 : false,
         ];
     }
 
