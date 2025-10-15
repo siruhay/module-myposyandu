@@ -3,60 +3,48 @@
 namespace Module\MyPosyandu\Models;
 
 use Illuminate\Http\Request;
-use Module\System\Traits\HasMeta;
 use Illuminate\Support\Facades\DB;
-use Module\System\Traits\Filterable;
-use Module\System\Traits\Searchable;
-use Module\System\Traits\HasPageSetup;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
+use Module\Posyandu\Models\PosyanduService;
 use Module\MyPosyandu\Models\MyPosyanduActivity;
 use Module\MyPosyandu\Http\Resources\PremiseResource;
 
-class MyPosyanduPremise extends Model
+class MyPosyanduPremise extends MyPosyanduComplaint
 {
-    use Filterable;
-    use HasMeta;
-    use HasPageSetup;
-    use Searchable;
-    use SoftDeletes;
+    /**
+     * mapCombos function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapCombos(Request $request): array
+    {
+        $activity = MyPosyanduActivity::find($request->segment(4));
+
+        return [
+            'services' => PosyanduService::forCombo(),
+            'complaints' => static::where('service_id', $activity->service_id)
+                ->whereNotExists(function ($query) {
+                    $query->select(DB::raw(1))
+                        ->from('posyandu_premises')
+                        ->whereColumn('posyandu_premises.complaint_id', 'posyandu_complaints.id');
+                })
+                ->forCombo(),
+        ];
+    }
 
     /**
-     * The connection name for the model.
+     * scopeForCombo function
      *
-     * @var string|null
+     * @param Builder $query
+     * @return void
      */
-    protected $connection = 'platform';
-
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'posyandu_premises';
-
-    /**
-     * The roles variable
-     *
-     * @var array
-     */
-    protected $roles = ['myposyandu-premise'];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'meta' => 'array'
-    ];
-
-    /**
-     * The default key for the order.
-     *
-     * @var string
-     */
-    protected $defaultOrder = 'name';
+    public function scopeForCombo(Builder $query)
+    {
+        return $query
+            ->select('description AS title', 'id AS value')
+            ->get();
+    }
 
     /**
      * The model store method
@@ -64,49 +52,18 @@ class MyPosyanduPremise extends Model
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request, MyPosyanduActivity $parent)
+    public static function storePivotRecord(Request $request, $parent)
     {
-        $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
+        DB::connection($parent->connection)->beginTransaction();
 
         try {
-            // ...
-            $parent->premises()->save($model);
+            $parent->premises()->attach($request->complaint_id);
 
-            DB::connection($model->connection)->commit();
+            DB::connection($parent->connection)->commit();
 
-            return new PremiseResource($model);
+            return new PremiseResource($parent);
         } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * The model update method
-     *
-     * @param Request $request
-     * @param [type] $model
-     * @return void
-     */
-    public static function updateRecord(Request $request, $model)
-    {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            return new PremiseResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
+            DB::connection($parent->connection)->rollBack();
 
             return response()->json([
                 'success' => false,
@@ -121,64 +78,12 @@ class MyPosyanduPremise extends Model
      * @param [type] $model
      * @return void
      */
-    public static function deleteRecord($model)
+    public static function deletePivotRecord($model, $parent)
     {
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            $model->delete();
-
-            DB::connection($model->connection)->commit();
-
-            return new PremiseResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * The model restore method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function restoreRecord($model)
-    {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->restore();
-
-            DB::connection($model->connection)->commit();
-
-            return new PremiseResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function destroyRecord($model)
-    {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->forceDelete();
+            $parent->premises()->detach($model->id);
 
             DB::connection($model->connection)->commit();
 

@@ -25,6 +25,7 @@ class MyPosyanduPremiseController extends Controller
         return new PremiseCollection(
             $myPosyanduActivity
                 ->premises()
+                ->with(['service'])
                 ->applyMode($request->mode)
                 ->filter($request->filters)
                 ->search($request->findBy)
@@ -46,7 +47,7 @@ class MyPosyanduPremiseController extends Controller
 
         $request->validate([]);
 
-        return MyPosyanduPremise::storeRecord($request, $myPosyanduActivity);
+        return MyPosyanduPremise::storePivotRecord($request, $myPosyanduActivity);
     }
 
     /**
@@ -91,7 +92,7 @@ class MyPosyanduPremiseController extends Controller
     {
         Gate::authorize('delete', $myPosyanduPremise);
 
-        return MyPosyanduPremise::deleteRecord($myPosyanduPremise);
+        return MyPosyanduPremise::deletePivotRecord($myPosyanduPremise, $myPosyanduActivity);
     }
 
     /**

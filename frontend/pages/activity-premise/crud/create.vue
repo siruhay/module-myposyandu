@@ -1,13 +1,15 @@
 <template>
 	<form-create with-helpdesk>
-		<template v-slot:default="{ record }">
+		<template v-slot:default="{ combos: { complaints }, record }">
 			<v-card-text>
 				<v-row dense>
 					<v-col cols="12">
-						<v-text-field
-							label="Name"
-							v-model="record.name"
-						></v-text-field>
+						<v-combobox
+							:items="complaints"
+							:return-object="false"
+							label="Pengaduan"
+							v-model="record.complaint_id"
+						></v-combobox>
 					</v-col>
 				</v-row>
 			</v-card-text>

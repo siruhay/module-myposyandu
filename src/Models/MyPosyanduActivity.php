@@ -195,6 +195,21 @@ class MyPosyanduActivity extends Model
     }
 
     /**
+     * premises function
+     *
+     * @return BelongsToMany
+     */
+    public function premises(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            MyPosyanduComplaint::class,
+            'posyandu_premises',
+            'activity_id',
+            'complaint_id'
+        );
+    }
+
+    /**
      * service function
      *
      * @return BelongsTo

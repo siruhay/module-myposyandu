@@ -9,10 +9,10 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Module\Posyandu\Models\PosyanduService;
 use Module\Posyandu\Models\PosyanduActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Module\MyPosyandu\Http\Resources\ComplaintResource;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
