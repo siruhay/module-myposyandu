@@ -178,7 +178,7 @@ class MyPosyanduActivity extends Model
     public static function mapStatuses(Request $request, $model = null): array
     {
         return [
-            'hasPremises' => $model ? $model->premises->count() > 0 : false,
+            'hasPremises' => $model ? $model->status === 'DRAFTED' && $model->premises->count() > 0 : false,
         ];
     }
 
@@ -219,6 +219,21 @@ class MyPosyanduActivity extends Model
             'posyandu_premises',
             'activity_id',
             'complaint_id'
+        );
+    }
+
+    /**
+     * recipients function
+     *
+     * @return BelongsToMany
+     */
+    public function recipients(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            MyPosyanduBeneficiary::class,
+            'posyandu_recipients',
+            'activity_id',
+            'beneficiary_id'
         );
     }
 
@@ -294,6 +309,35 @@ class MyPosyanduActivity extends Model
             $model->status = 'DRAFTED';
             $model->paths = $request->paths;
             $model->user_id = $request->user()->id;
+            $model->save();
+
+            DB::connection($model->connection)->commit();
+
+            return new ActivityResource($model);
+        } catch (\Exception $e) {
+            DB::connection($model->connection)->rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * postedRecord function
+     *
+     * @param Request $request
+     * @param [type] $model
+     * @return void
+     */
+    public static function postedRecord(Request $request, $model)
+    {
+        DB::connection($model->connection)->beginTransaction();
+
+        try {
+            $model->status = 'POSTED';
+            $model->posted_at = now();
             $model->save();
 
             DB::connection($model->connection)->commit();

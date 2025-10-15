@@ -21,7 +21,8 @@ class MyPosyanduBeneficiaryController extends Controller
         Gate::authorize('view', MyPosyanduBeneficiary::class);
 
         return new BeneficiaryCollection(
-            MyPosyanduBeneficiary::applyMode($request->mode)
+            MyPosyanduBeneficiary::with(['biodata', 'biodata.subdistrict', 'biodata.village', 'category', 'community'])
+                ->applyMode($request->mode)
                 ->filter($request->filters)
                 ->search($request->findBy)
                 ->sortBy($request->sortBy)

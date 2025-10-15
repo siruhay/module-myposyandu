@@ -25,6 +25,7 @@ class MyPosyanduRecipientController extends Controller
         return new RecipientCollection(
             $myPosyanduActivity
                 ->recipients()
+                ->with(['biodata', 'biodata.subdistrict', 'biodata.village', 'category', 'community'])
                 ->applyMode($request->mode)
                 ->filter($request->filters)
                 ->search($request->findBy)
@@ -46,7 +47,7 @@ class MyPosyanduRecipientController extends Controller
 
         $request->validate([]);
 
-        return MyPosyanduRecipient::storeRecord($request, $myPosyanduActivity);
+        return MyPosyanduRecipient::storePivotRecord($request, $myPosyanduActivity);
     }
 
     /**

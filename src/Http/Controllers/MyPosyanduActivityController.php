@@ -75,6 +75,22 @@ class MyPosyanduActivityController extends Controller
     }
 
     /**
+     * posted function
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Module\MyPosyandu\Models\MyPosyanduActivity $myPosyanduActivity
+     * @return \Illuminate\Http\Response
+     */
+    public function posted(Request $request, MyPosyanduActivity $myPosyanduActivity)
+    {
+        Gate::authorize('update', $myPosyanduActivity);
+
+        $request->validate([]);
+
+        return MyPosyanduActivity::postedRecord($request, $myPosyanduActivity);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \Module\MyPosyandu\Models\MyPosyanduActivity $myPosyanduActivity

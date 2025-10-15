@@ -3,60 +3,27 @@
 namespace Module\MyPosyandu\Models;
 
 use Illuminate\Http\Request;
-use Module\System\Traits\HasMeta;
 use Illuminate\Support\Facades\DB;
-use Module\System\Traits\Filterable;
-use Module\System\Traits\Searchable;
-use Module\System\Traits\HasPageSetup;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Module\MyPosyandu\Models\MyPosyanduActivity;
-use Module\MyPosyandu\Http\Resources\RecipientResource;
+use Module\Foundation\Models\FoundationCommunity;
+use Module\Posyandu\Models\PosyanduCategory;
+use Module\Reference\Models\ReferenceGender;
+use Module\MyPosyandu\Http\Resources\BeneficiaryResource;
 
-class MyPosyanduRecipient extends Model
+class MyPosyanduRecipient extends MyPosyanduBeneficiary
 {
-    use Filterable;
-    use HasMeta;
-    use HasPageSetup;
-    use Searchable;
-    use SoftDeletes;
-
     /**
-     * The connection name for the model.
+     * mapCombos function
      *
-     * @var string|null
+     * @param Request $request
+     * @return array
      */
-    protected $connection = 'platform';
-
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'myposyandu_recipients';
-
-    /**
-     * The roles variable
-     *
-     * @var array
-     */
-    protected $roles = ['myposyandu-recipient'];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'meta' => 'array'
-    ];
-
-    /**
-     * The default key for the order.
-     *
-     * @var string
-     */
-    protected $defaultOrder = 'name';
+    public static function mapCombos(Request $request): array
+    {
+        return [
+            'categories' => PosyanduCategory::forCombo(),
+            'genders' => ReferenceGender::forCombo()
+        ];
+    }
 
     /**
      * The model store method
@@ -64,127 +31,22 @@ class MyPosyanduRecipient extends Model
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request, MyPosyanduActivity $parent)
+    public static function storePivotRecord(Request $request, $parent)
     {
-        $model = new static();
-
-        DB::connection($model->connection)->beginTransaction();
+        DB::connection($parent->connection)->beginTransaction();
 
         try {
-            // ...
-            $parent->recipients()->save($model);
+            $community = FoundationCommunity::find($request->user()->userable->workunitable_id);
 
-            DB::connection($model->connection)->commit();
+            if ($beneficiary = MyPosyanduBeneficiary::storeFrom($request, $community)) {
+                $parent->recipients()->attach($beneficiary->id);
+            }
 
-            return new RecipientResource($model);
+            DB::connection($parent->connection)->commit();
+
+            return new BeneficiaryResource($parent);
         } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * The model update method
-     *
-     * @param Request $request
-     * @param [type] $model
-     * @return void
-     */
-    public static function updateRecord(Request $request, $model)
-    {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            // ...
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            return new RecipientResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * The model delete method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function deleteRecord($model)
-    {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->delete();
-
-            DB::connection($model->connection)->commit();
-
-            return new RecipientResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * The model restore method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function restoreRecord($model)
-    {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->restore();
-
-            DB::connection($model->connection)->commit();
-
-            return new RecipientResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * The model destroy method
-     *
-     * @param [type] $model
-     * @return void
-     */
-    public static function destroyRecord($model)
-    {
-        DB::connection($model->connection)->beginTransaction();
-
-        try {
-            $model->forceDelete();
-
-            DB::connection($model->connection)->commit();
-
-            return new RecipientResource($model);
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
+            DB::connection($parent->connection)->rollBack();
 
             return response()->json([
                 'success' => false,

@@ -5,6 +5,7 @@ namespace Module\MyPosyandu\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Module\MyPosyandu\Models\MyPosyanduBeneficiary;
 use Module\Posyandu\Http\Resources\DocmapResource;
 use Module\Posyandu\Models\PosyanduDocmap;
 use Module\Posyandu\Models\PosyanduDocument;
@@ -28,6 +29,22 @@ class DashboardController extends Controller
         switch ($request->model) {
             case 'documents':
                 return DocmapResource::collection(PosyanduService::find($request->refid)->docmaps->load(['document']));
+                break;
+
+            default:
+                # code...
+                break;
+        }
+    }
+
+    public function record(Request $request)
+    {
+        switch ($request->model) {
+            case 'beneficiary':
+                return MyPosyanduBeneficiary::mapResource(
+                    $request,
+                    MyPosyanduBeneficiary::with(['biodata', 'biodata.subdistrict', 'biodata.village', 'category', 'community'])->firstWhere('slug', $request->refid)
+                );
                 break;
 
             default:

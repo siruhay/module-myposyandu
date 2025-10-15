@@ -78,7 +78,7 @@
 			</v-card-text>
 		</template>
 
-		<template v-slot:info="{ statuses: { hasPremises }, theme }">
+		<template v-slot:info="{ statuses: { hasPremises }, record, theme }">
 			<div class="text-overline mt-4">Link</div>
 			<v-divider class="mb-3"></v-divider>
 
@@ -116,6 +116,7 @@
 				<v-col cols="6">
 					<v-btn
 						:color="theme"
+						:disabled="true"
 						variant="flat"
 						size="large"
 						block
@@ -135,7 +136,7 @@
 						variant="flat"
 						size="large"
 						block
-						@click="$router.push({ name: 'myposyandu-funding' })"
+						@click="postActivity(record)"
 					>
 						<div class="text-caption text-uppercase" style="line-height: 1">
 							Ajukan <br />
@@ -151,5 +152,15 @@
 <script>
 export default {
 	name: "myposyandu-activity-show",
+
+	methods: {
+		postActivity: function (record) {
+			this.$http(`/myposyandu/api/activity/${record.id}/posted`, {
+				method: "POST",
+			}).then(() => {
+				this.$router.push({ name: "myposyandu-activity" });
+			});
+		},
+	},
 };
 </script>
