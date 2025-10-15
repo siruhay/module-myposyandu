@@ -85,7 +85,7 @@ class MyPosyanduActivity extends Model
             ['title' => 'Nama Kegiatan', 'value' => 'name'],
             ['title' => 'Bidang', 'value' => 'service_name'],
             ['title' => 'Tanggal', 'value' => 'date'],
-            ['title' => 'Anggaran', 'value' => 'budget'],
+            ['title' => 'Anggaran', 'value' => 'budget_formatted'],
             ['title' => 'JPM', 'value' => 'participants'],
             ['title' => 'Pelaksana', 'value' => 'executor'],
             ['title' => 'Status', 'value' => 'status'],
@@ -109,6 +109,12 @@ class MyPosyanduActivity extends Model
             'participants' => $model->participants,
             'executor' => $model->executor,
             'budget' => floatval(optional($model->funding)->budget),
+            'budget_formatted' => number_format(
+                floatval(optional($model->funding)->budget),
+                0,
+                ",",
+                "."
+            ),
             'status' => $model->status,
             'description' => $model->description
         ];
