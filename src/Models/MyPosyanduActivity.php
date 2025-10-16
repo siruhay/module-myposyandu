@@ -340,6 +340,13 @@ class MyPosyanduActivity extends Model
             $model->posted_at = now();
             $model->save();
 
+            $premises = $model->premises;
+
+            foreach ($premises as $premise) {
+                $premise->activity_id = $model->id;
+                $premise->save();
+            }
+
             DB::connection($model->connection)->commit();
 
             return new ActivityResource($model);
