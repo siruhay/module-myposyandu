@@ -21,7 +21,7 @@ class MyPosyanduActivityController extends Controller
         Gate::authorize('view', MyPosyanduActivity::class);
 
         return new ActivityCollection(
-            MyPosyanduActivity::with(['funding'])
+            MyPosyanduActivity::with(['funding', 'service'])
                 ->applyMode($request->mode)
                 ->filter($request->filters)
                 ->search($request->findBy)
