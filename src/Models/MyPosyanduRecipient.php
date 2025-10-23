@@ -39,7 +39,7 @@ class MyPosyanduRecipient extends MyPosyanduBeneficiary
             $community = FoundationCommunity::find($request->user()->userable->workunitable_id);
 
             if ($beneficiary = MyPosyanduBeneficiary::storeFrom($request, $community)) {
-                $parent->recipients()->attach($beneficiary->id);
+                $parent->recipients()->attach($beneficiary->id, ['indicator_id' => $request->indicator_id]);
             }
 
             DB::connection($parent->connection)->commit();
