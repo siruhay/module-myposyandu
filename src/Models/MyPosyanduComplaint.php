@@ -184,7 +184,7 @@ class MyPosyanduComplaint extends Model
         try {
             // ['LOW', 'MEDIUM', 'HIGH']
             // ['NEW', 'IN-PROGRESS', 'RESOLVED']
-            $model->name = $request->name;
+            $model->name = str($request->name)->upper()->toString();
             $model->date = $request->date;
             $model->service_id = $request->service_id;
             $model->community_id = optional($request->user()->userable)->workunitable_id;

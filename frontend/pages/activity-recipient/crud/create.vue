@@ -91,13 +91,15 @@ export default {
 					refid: record.slug,
 				},
 			}).then((res) => {
-				record.name = res.name;
-				record.slug = res.slug;
-				record.phone = res.phone;
-				record.gender_id = res.gender_id;
-				record.citizen = res.citizen;
-				record.neighborhood = res.neighborhood;
-				record.category_id = res.category_id;
+				if ("name" in res) {
+					record.name = res.name;
+					record.slug = res.slug;
+					record.phone = res.phone;
+					record.gender_id = res.gender_id;
+					record.citizen = res.citizen;
+					record.neighborhood = res.neighborhood;
+					record.category_id = res.category_id;
+				}
 			});
 		},
 	},

@@ -181,43 +181,33 @@ class MyPosyanduBeneficiary extends Model
             $model = new static();
         }
 
-        DB::connection($model->connection)->beginTransaction();
+        $biodata = FoundationBiodata::storeFrom(
+            (object) [
+                'name' => str($request->name)->upper()->toString(),
+                'slug' => $request->slug,
+                'phone' => $request->phone,
+                'kind' => 'NON-ASN',
+                'type' => 'CITIZEN',
+                'role' => 'CITIZEN',
+                'gender_id' => $request->gender_id,
+                'workunitable_type' => get_class($community),
+                'workunitable_id' => $community->id,
+                'village_id' => $community->village_id,
+                'subdistrict_id' => $community->subdistrict_id,
+                'regency_id' => 3,
+                'citizen' => $request->citizen,
+                'neighborhood' => $request->neighborhood,
+            ]
+        );
 
-        try {
-            $biodata = FoundationBiodata::storeFrom(
-                (object) [
-                    'name' => $request->name,
-                    'slug' => $request->slug,
-                    'phone' => $request->phone,
-                    'kind' => 'NON-ASN',
-                    'type' => 'CITIZEN',
-                    'role' => 'CITIZEN',
-                    'gender_id' => $request->gender_id,
-                    'workunitable_type' => get_class($community),
-                    'workunitable_id' => $community->id,
-                    'village_id' => $community->village_id,
-                    'subdistrict_id' => $community->subdistrict_id,
-                    'regency_id' => 3,
-                    'citizen' => $request->citizen,
-                    'neighborhood' => $request->neighborhood,
-                ]
-            );
+        $model->name = $biodata->name;
+        $model->slug = $biodata->slug;
+        $model->community_id = $community->id;
+        $model->category_id = $request->category_id;
+        $model->biodata_id = $biodata->id;
+        $model->save();
 
-            $model->name = $biodata->name;
-            $model->slug = $biodata->slug;
-            $model->community_id = $community->id;
-            $model->category_id = $request->category_id;
-            $model->biodata_id = $biodata->id;
-            $model->save();
-
-            DB::connection($model->connection)->commit();
-
-            return $model;
-        } catch (\Exception $e) {
-            DB::connection($model->connection)->rollBack();
-
-            return null;
-        }
+        return $model;
     }
 
     /**

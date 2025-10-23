@@ -41,9 +41,17 @@ class DashboardController extends Controller
     {
         switch ($request->model) {
             case 'beneficiary':
+                $beneficiary = MyPosyanduBeneficiary::with(
+                    ['biodata', 'biodata.subdistrict', 'biodata.village', 'category', 'community']
+                )->firstWhere('slug', $request->refid);
+
+                if (!$beneficiary) {
+                    return [];
+                }
+
                 return MyPosyanduBeneficiary::mapResource(
                     $request,
-                    MyPosyanduBeneficiary::with(['biodata', 'biodata.subdistrict', 'biodata.village', 'category', 'community'])->firstWhere('slug', $request->refid)
+                    $beneficiary
                 );
                 break;
 
