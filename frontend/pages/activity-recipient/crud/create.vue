@@ -1,6 +1,8 @@
 <template>
 	<form-create with-helpdesk>
-		<template v-slot:default="{ combos: { categories, genders }, record }">
+		<template
+			v-slot:default="{ combos: { categories, genders, indicators }, record }"
+		>
 			<v-card-text>
 				<v-row dense>
 					<v-col cols="12">
@@ -53,11 +55,20 @@
 						></v-text-field>
 					</v-col>
 
-					<v-col cols="12">
+					<v-col cols="6">
 						<v-select
 							:items="categories"
 							label="Kategori"
 							v-model="record.category_id"
+							hide-details
+						></v-select>
+					</v-col>
+
+					<v-col cols="6">
+						<v-select
+							:items="indicators"
+							label="Indikator"
+							v-model="record.indicator_id"
 							hide-details
 						></v-select>
 					</v-col>

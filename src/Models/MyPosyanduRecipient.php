@@ -8,6 +8,7 @@ use Module\Foundation\Models\FoundationCommunity;
 use Module\Posyandu\Models\PosyanduCategory;
 use Module\Reference\Models\ReferenceGender;
 use Module\MyPosyandu\Http\Resources\BeneficiaryResource;
+use Module\Posyandu\Models\PosyanduIndicator;
 
 class MyPosyanduRecipient extends MyPosyanduBeneficiary
 {
@@ -19,9 +20,12 @@ class MyPosyanduRecipient extends MyPosyanduBeneficiary
      */
     public static function mapCombos(Request $request): array
     {
+        $activity = MyPosyanduActivity::find(intval($request->segment(4)));
+
         return [
             'categories' => PosyanduCategory::forCombo(),
-            'genders' => ReferenceGender::forCombo()
+            'genders' => ReferenceGender::forCombo(),
+            'indicators' => PosyanduIndicator::where('service_id', optional($activity)->service_id)->forCombo()
         ];
     }
 
