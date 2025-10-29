@@ -194,6 +194,7 @@ class MyPosyanduComplaint extends Model
             $model->service_id = $request->service_id;
             $model->community_id = optional($community)->id;
             $model->village_id = optional($community)->village_id;
+            $model->subdistrict_id = optional($community)->subdistrict_id;
             $model->description = $request->description;
             $model->paths = $request->paths;
             $model->urgency = $request->urgency;
