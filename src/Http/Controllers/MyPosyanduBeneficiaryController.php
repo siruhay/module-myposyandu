@@ -22,6 +22,7 @@ class MyPosyanduBeneficiaryController extends Controller
 
         return new BeneficiaryCollection(
             MyPosyanduBeneficiary::with(['biodata', 'biodata.subdistrict', 'biodata.village', 'category', 'community'])
+                ->forCurrentUser($request->user())
                 ->applyMode($request->mode)
                 ->filter($request->filters)
                 ->search($request->findBy)

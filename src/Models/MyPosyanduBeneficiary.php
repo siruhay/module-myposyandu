@@ -9,12 +9,13 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
+use Module\Posyandu\Models\PosyanduCategory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Foundation\Models\FoundationBiodata;
 use Module\Foundation\Models\FoundationCommunity;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Module\MyPosyandu\Http\Resources\BeneficiaryResource;
-use Module\Posyandu\Models\PosyanduCategory;
 
 class MyPosyanduBeneficiary extends Model
 {
@@ -114,6 +115,19 @@ class MyPosyanduBeneficiary extends Model
             'subtitle' => (string) $model->updated_at,
             'updated_at' => (string) $model->updated_at,
         ];
+    }
+
+    /**
+     * scopeForCurrentUser function
+     *
+     * @param Builder $query
+     * @param [type] $user
+     * @return void
+     */
+    public function scopeForCurrentUser(Builder $query, $user)
+    {
+        return $query
+            ->where('village_id', $user?->userable?->village_id);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Module\MyPosyandu\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Module\System\Traits\HasMeta;
 use Illuminate\Support\Facades\DB;
@@ -211,6 +212,19 @@ class MyPosyanduActivity extends Model
             'hasPremises' => $model ? $model->status === 'DRAFTED' && $model->premises->count() > 0 : false,
             'hasBeenPosted' => $model ? $model->status === 'POSTED' : false
         ];
+    }
+
+    /**
+     * scopeForCurrentUser function
+     *
+     * @param Builder $query
+     * @param [type] $user
+     * @return void
+     */
+    public function scopeForCurrentUser(Builder $query, $user)
+    {
+        return $query
+            ->where('village_id', $user?->userable?->village_id);
     }
 
     /**

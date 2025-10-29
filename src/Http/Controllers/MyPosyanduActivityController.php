@@ -22,6 +22,7 @@ class MyPosyanduActivityController extends Controller
 
         return new ActivityCollection(
             MyPosyanduActivity::with(['funding', 'service'])
+                ->forCurrentUser($request->user())
                 ->applyMode($request->mode)
                 ->filter($request->filters)
                 ->search($request->findBy)

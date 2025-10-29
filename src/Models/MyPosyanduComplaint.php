@@ -9,6 +9,7 @@ use Module\System\Traits\Filterable;
 use Module\System\Traits\Searchable;
 use Module\System\Traits\HasPageSetup;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Module\Posyandu\Models\PosyanduService;
 use Module\Posyandu\Models\PosyanduActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -143,6 +144,19 @@ class MyPosyanduComplaint extends Model
         return [
             'services' => PosyanduService::forCombo(),
         ];
+    }
+
+    /**
+     * scopeForCurrentUser function
+     *
+     * @param Builder $query
+     * @param [type] $user
+     * @return void
+     */
+    public function scopeForCurrentUser(Builder $query, $user)
+    {
+        return $query
+            ->where('village_id', $user?->userable?->village_id);
     }
 
     /**

@@ -22,6 +22,7 @@ class MyPosyanduComplaintController extends Controller
 
         return new ComplaintCollection(
             MyPosyanduComplaint::with(['service'])
+                ->forCurrentUser($request->user())
                 ->applyMode($request->mode)
                 ->filter($request->filters)
                 ->search($request->findBy)
