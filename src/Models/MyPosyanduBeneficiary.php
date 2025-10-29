@@ -203,6 +203,7 @@ class MyPosyanduBeneficiary extends Model
         $model->name = $biodata->name;
         $model->slug = $biodata->slug;
         $model->community_id = $community->id;
+        $model->village_id = $community->village_id;
         $model->category_id = $request->category_id;
         $model->biodata_id = $biodata->id;
         $model->save();
