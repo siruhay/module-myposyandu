@@ -135,6 +135,35 @@ class MyPosyanduActivity extends Model
     }
 
     /**
+     * mapResourceShow function
+     *
+     * @param Request $request
+     * @return array
+     */
+    public static function mapResourceShow(Request $request, $model): array
+    {
+        return [
+            'id' => $model->id,
+            'name' => $model->name,
+            'date' => $model->date,
+            'service_id' => $model->service_id,
+            'service_name' => optional($model->service)->name,
+            'participants' => $model->participants,
+            'executor' => $model->executor,
+            'budget' => floatval(optional($model->funding)->budget),
+            'budget_formatted' => number_format(
+                floatval(optional($model->funding)->budget),
+                0,
+                ",",
+                "."
+            ),
+            'status' => $model->status,
+            'complaints' => $model->complaints()->select('name', 'description')->get(),
+            'description' => $model->description
+        ];
+    }
+
+    /**
      * mapRecordBase function
      *
      * @param Request $request
@@ -180,6 +209,7 @@ class MyPosyanduActivity extends Model
     {
         return [
             'hasPremises' => $model ? $model->status === 'DRAFTED' && $model->premises->count() > 0 : false,
+            'hasBeenPosted' => $model ? $model->status === 'POSTED' : false
         ];
     }
 
@@ -349,6 +379,7 @@ class MyPosyanduActivity extends Model
 
             foreach ($premises as $premise) {
                 $premise->activity_id = $model->id;
+                $premise->status = 'IN-PROGRESS';
                 $premise->save();
             }
 
