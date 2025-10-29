@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Module\Posyandu\Models\PosyanduService;
 use Module\Posyandu\Models\PosyanduActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Module\Foundation\Models\FoundationCommunity;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Module\MyPosyandu\Http\Resources\ComplaintResource;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -179,6 +180,10 @@ class MyPosyanduComplaint extends Model
     {
         $model = new static();
 
+        $community = FoundationCommunity::find(
+            optional($request->user()->userable)->workunitable_id
+        );
+
         DB::connection($model->connection)->beginTransaction();
 
         try {
@@ -187,7 +192,8 @@ class MyPosyanduComplaint extends Model
             $model->name = str($request->name)->upper()->toString();
             $model->date = $request->date;
             $model->service_id = $request->service_id;
-            $model->community_id = optional($request->user()->userable)->workunitable_id;
+            $model->community_id = optional($community)->id;
+            $model->village_id = optional($community)->village_id;
             $model->description = $request->description;
             $model->paths = $request->paths;
             $model->urgency = $request->urgency;
@@ -220,7 +226,13 @@ class MyPosyanduComplaint extends Model
         DB::connection($model->connection)->beginTransaction();
 
         try {
-            // ...
+            $model->name = str($request->name)->upper()->toString();
+            $model->date = $request->date;
+            $model->service_id = $request->service_id;
+            $model->description = $request->description;
+            $model->paths = $request->paths;
+            $model->urgency = $request->urgency;
+            $model->user_id = $request->user()->id;
             $model->save();
 
             DB::connection($model->connection)->commit();

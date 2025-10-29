@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Module\MyPosyandu\Http\Resources\ActivityResource;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Module\Foundation\Models\FoundationCommunity;
 
 class MyPosyanduActivity extends Model
 {
@@ -257,13 +258,18 @@ class MyPosyanduActivity extends Model
     {
         $model = new static();
 
+        $community = FoundationCommunity::find(
+            optional($request->user()->userable)->workunitable_id
+        );
+
         DB::connection($model->connection)->beginTransaction();
 
         try {
             $model->name = $request->name;
             $model->date = $request->date;
             $model->service_id = $request->service_id;
-            $model->community_id = optional($request->user()->userable)->workunitable_id;
+            $model->community_id = optional($community)->id;
+            $model->village_id = optional($community)->village_id;
             $model->executor = $request->executor;
             $model->description = $request->description;
             $model->participants = $request->participants;
@@ -302,7 +308,6 @@ class MyPosyanduActivity extends Model
             $model->name = $request->name;
             $model->date = $request->date;
             $model->service_id = $request->service_id;
-            $model->community_id = $request->user()->workunitable_id;
             $model->executor = $request->executor;
             $model->description = $request->description;
             $model->participants = $request->participants;
